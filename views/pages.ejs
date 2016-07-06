@@ -1,0 +1,55 @@
+<% include header.ejs %>
+<script type="text/javascript"> _timePoints['firstElement'] = new Date; </script>
+<div class="container-fluid">
+  <div class="row">
+    <% include left.ejs %>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <ul>
+        <form class="form-inline">
+          <div class="form-group">
+            <select  class="form-control input-sm" ><option>业务名称</option></select>
+            <select  class="form-control input-sm"><option>页面名称</option></select>
+            <label for="date_start">开始时间</label><input type="date"  id="date_start" class="form-control input-sm">
+            <label for="date_end">结束时间</label><input type="date" id="date_end" class="form-control input-sm">
+            <button type="submit" class="btn btn-primary btn-sm">查询</button>
+          </div>
+        </form>
+      </ul>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>业务名</th>
+            <th>页面名称</th>
+            <th>日期</th>
+            <th><%= tbHeader['t1']%></th>
+            <th><%= tbHeader['t2']%></th>
+            <th><%= tbHeader['t3']%></th>
+            <th><%= tbHeader['t4']%></th>
+            <th><%= tbHeader['t5']%></th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <% speedData.forEach( function(item){ %>
+          <tr>
+            <td><%= item.bizInfo.name %></td>
+            <td><%= item.pageInfo.name %></td>
+            <td><%= item._id.createdate %></td>
+            <td><%= item.value.t2 %></td>
+            <td><%= item.value.t3 %></td>
+            <td><%= item.value.t5 %></td>
+          </tr>
+          <% }) %>
+          </tbody>
+        </table>
+
+        <img src="http://img1.gtimg.com/stock/pics/hv1/114/97/2094/136187199.jpg">
+      </div>
+    </div>
+
+  </div>
+</div>
+<% include footer.ejs %>

@@ -1,0 +1,42 @@
+var MongoClient = require('mongodb').MongoClient,
+    assert = require('assert');
+
+var mongoDSN = 'mongodb://localhost:27017/pagespeed';
+
+
+
+function* insert (tbname, record ){
+        var db = yield MongoClient.connect(mongoDSN);
+        var r = yield db.collection(tbname).insertOne(record);
+        assert.equal(1, r.insertedCount);
+}
+
+function* mapReduce(tbname,map,reduce,option){
+    var db = yield MongoClient.connect(mongoDSN);
+    var col = db.collection(tbname);
+
+    var r= yield col.mapReduce(map,reduce,option);
+    return r
+}
+
+function* find(tbname,query){
+    var db = yield MongoClient.connect(mongoDSN);
+    var col = db.collection(tbname);
+
+    var r= yield col.find(query).toArray();
+    
+    return r;
+}
+
+function* conn (){
+    var conn = yield MongoClient.connect(mongoDSN);
+    return conn;
+}
+
+module.exports = {
+    insert : insert,
+    mapReduce:mapReduce,
+    find:find,
+    conn:conn,
+    update : function(){}
+};
