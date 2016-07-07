@@ -5,14 +5,16 @@
  * 测速上报
  * 使用方式：
  * 设置上报起始点 var _timemarks = [ new Date]; //通常置于页面的 head 中
- * 设置首屏可见的时间  _timemarks['onshow']=  new Date; // _timemarks['onshow'] == _timemarks[1];
- * 设置首屏可交互  _timemarks['onactive']= new Date; // _timemarks['onactive'] == _timemarks[2];
+ * 设置首屏可见的时间  _timemarks['firstElement']=  new Date; // _timemarks['firstElement'] == _timemarks[1];
+ * 设置首屏可交互  _timemarks['firstScreen']= new Date; // _timemarks['firstScreen'] == _timemarks[2];
  *
- * _timemarks[5] ... _timemarks[20] 这16个时间点为业务可以用于业务自定义上报的时间点。
+ * _timemarks[10] ... _timemarks[29] 这20个时间点为业务可以用于业务自定义上报的时间点。
  *
- * 例如你可以上报 _timemarks[5] ＝ new Date; //ajax 开始请求
- *              _timemarks[6] ＝ new Date; //ajax 完成请求
+ * 例如你可以上报 _timemarks[10] ＝ new Date; //ajax 开始请求
+ *              _timemarks[29] ＝ new Date; //ajax 完成请求
  * 然后在测速系统的后台配置ajax耗时为 (时间点6-时间点5) 即可。
+ *
+ * 
  *
  */
 
@@ -27,13 +29,13 @@
 
 })(window, function (root, param) {
 
-    var _reportUrl = "http://127.0.0.1:3000/report";
-    var _keyMax = 20;//时间点个数.(20相当于 0...20)
+    var _reportUrl = "http://speed.showapp.xunlei.com/report/";
+    var _keyMax = 30;//时间点个数.(20相当于 0...20)
 
     var _keyName = {//测速系统公共的上报点的键名称
         0: 0,			//起始时间点
-        1: 'firstElement',	    //首屏可见时间  可以选择上报domready时间或者ajax填充首屏后的时间。
-        2: 'firstScreen',	//首屏可交互的时间＊ 考核点 *。
+        1: 'firstElement',	    //首元素可见时间
+        2: 'firstScreen',	//首屏可见的时间
         3: 'active',	//首屏可交互的时间＊ 考核点 *。
         4: 'finish'         //页面完全加载时间
     };
@@ -71,7 +73,7 @@
     //配置上报测速点的名称
     function configName(conf) {
         for (var k in conf) {
-            if (k < 5) {
+            if (k < 10) {
                 _log("warning: you just overwrites the default keyname of page speed report");
             }
             _keyName[k] = conf[k];
@@ -85,7 +87,7 @@
         var result = {};
         var kname;
         //处理key的映射关系
-        for (var k = 0; k <= _keyMax; k++) {
+        for (var k = 0; k < _keyMax; k++) {
             kname = _keyName[k] || k;
             if (typeof timemarks[kname] == "undefined") {
                 continue;
