@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require("../mod/db");
 var co = require('co');
+var date = require('datejs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -114,8 +115,7 @@ function processData(query, fields) {
 */
 
     record.createtime = (new Date()).getTime();
-
-    console.log(record);
+    record.createdate = (new Date()).toString('yyyy-MM-dd');
 
     return record;
 }

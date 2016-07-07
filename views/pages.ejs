@@ -28,7 +28,6 @@
             <th><%= tbHeader['t2']%></th>
             <th><%= tbHeader['t3']%></th>
             <th><%= tbHeader['t4']%></th>
-            <th><%= tbHeader['t5']%></th>
           </tr>
           </thead>
           <tbody>
@@ -38,9 +37,10 @@
             <td><%= item.bizInfo.name %></td>
             <td><%= item.pageInfo.name %></td>
             <td><%= item._id.createdate %></td>
-            <td><%= item.value.t2 %></td>
-            <td><%= item.value.t3 %></td>
-            <td><%= item.value.t5 %></td>
+            <td><%= item.value.timemarks[1] %></td>
+            <td><%= item.value.timemarks[2] %></td>
+            <td><%= item.value.timemarks[3] %></td>
+            <td><%= item.value.timemarks[4] %></td>
           </tr>
           <% }) %>
           </tbody>
