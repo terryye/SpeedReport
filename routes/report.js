@@ -3,65 +3,65 @@ var router = express.Router();
 var db = require("../mod/db");
 var co = require('co');
 var date = require('datejs');
+var fs = require('fs');
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-
-
-    //请求需要的字段
-    var fields = {
-        "required": [
+    co(function*() {
+        //请求需要的字段
+        var fields = {
+            "required": [
 //      'bizid',  //业务id
-            'pageid',    //页面id
-        ],
-        extra: [
+                'pageid',    //页面id
+            ],
+            extra: [
 //      'client_ver', //客户端版本
 //      'page_ver'    //页面版本
-        ],
-        timing: [
-            'navigationStart',
-            'unloadEventStart',
-            'unloadEventEnd',
-            'redirectStart',
-            'redirectEnd',
-            'fetchStart',
-            'domainLookupStart',
-            'domainLookupEnd',
-            'connectStart',
-            'connectEnd',
-            'secureConnectionStart',
-            'requestStart',
-            'responseStart',
-            'responseEnd',
-            'domLoading',
-            'domInteractive',
-            'domContentLoadedEventStart',
-            'domContentLoadedEventEnd',
-            'domComplete',
-            'loadEventStart',
-            'loadEventEnd'
-        ],
-        timemarks: [],
-    };
+            ],
+            timing: [
+                'navigationStart',
+                'unloadEventStart',
+                'unloadEventEnd',
+                'redirectStart',
+                'redirectEnd',
+                'fetchStart',
+                'domainLookupStart',
+                'domainLookupEnd',
+                'connectStart',
+                'connectEnd',
+                'secureConnectionStart',
+                'requestStart',
+                'responseStart',
+                'responseEnd',
+                'domLoading',
+                'domInteractive',
+                'domContentLoadedEventStart',
+                'domContentLoadedEventEnd',
+                'domComplete',
+                'loadEventStart',
+                'loadEventEnd'
+            ],
+            timemarks: [],
+        };
 
-    for (var i = 0; i <= 20; i++) {
-        fields.timemarks.push(i + "");
-    }
+        for (var i = 0; i <= 20; i++) {
+            fields.timemarks.push(i + "");
+        }
 
-    //通用参数 sid 业务id   pageid= 页面id , 容器版本(手雷V1/V2)， 页面版本(1,2,3)
-    var record = processData(req.query, fields);
+        //通用参数 sid 业务id   pageid= 页面id , 容器版本(手雷V1/V2)， 页面版本(1,2,3)
+        var record = processData(req.query, fields);
 
-    console.log(record);
+        console.log(record);
+        yield db.insert('rawdata', record);
 
-    co(db.insert('rawdata', record)).catch(function(){
-        //todo: common log class
-        console.log("error")
-    })
+    }).catch(function () {
+    });
 
-    //返回
-    res.header('Cache-Control', 'public, max-age=6000')
-    res.render('content', {content: 'OK'});
-
+    var emptybmp = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
+    var img =new Buffer(emptybmp, 'base64');;
+    res.writeHead(200, {'Content-Type': 'image/x-ms-bmp' });
+    res.end(img, 'binary');
 
 });
 
@@ -107,12 +107,11 @@ function processData(query, fields) {
     if (timemarks != null) {
         record['timemarks'] = timemarks;
     }
-/*
-    var timing = _parsingTimeJson('timing', fields.timing);
-    if (timing != null) {
+
+     var timing = _parsingTimeJson('timing', fields.timing);
+     if (timing != null) {
         record['timing'] = timing;
-    }
-*/
+     }
 
     record.createtime = (new Date()).getTime();
     record.createdate = (new Date()).toString('yyyy-MM-dd');

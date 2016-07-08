@@ -14,7 +14,7 @@
  *              _timemarks[29] ＝ new Date; //ajax 完成请求
  * 然后在测速系统的后台配置ajax耗时为 (时间点6-时间点5) 即可。
  *
- * 
+ * 上报接口 Speed.report(pageid, _timemarks); //pageid为页面的id,可在管理后台自行申请。
  *
  */
 
@@ -29,7 +29,10 @@
 
 })(window, function (root, param) {
 
-    var _reportUrl = "http://speed.showapp.xunlei.com/report/";
+ //   var _reportUrl = "http://speed.showapp.xunlei.com/report/";
+    var _reportUrl = "http://php.walkpast.com/speed/report";
+//    _reportUrl ="http://localhost/dashboard/images/bitnami-xampp.png";
+
     var _keyMax = 30;//时间点个数.(20相当于 0...20)
 
     var _keyName = {//测速系统公共的上报点的键名称

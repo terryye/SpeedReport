@@ -20,8 +20,8 @@ router.get('/', function (req, res, next) {
     co(function*() {
 
         //默认显示今天所有业务的数据
-        //var timestamp_start = new Date().at("0:0").getTime();
-        var timestamp_start = 0;
+        var timestamp_start = new Date().at("0:0").getTime();
+        //var timestamp_start = 0;
         var map = function () {
             emit({
                     pageid: this.pageid,
@@ -70,20 +70,20 @@ router.get('/', function (req, res, next) {
                 res.counts[k] = reduceResult.counts[k];
             }
 
-//            res.createtime = new Date().getTime();
+            res.createtime = new Date().getTime();
 
             return res;
         }
 
         yield db.mapReduce('rawdata', map, reduce, {
-//                    "finalize": finalizeFun,
+                    "finalize": finalizeFun,
             "scope": {"maxTimeMarks": config.maxTimeMarks},
             "out": "SpeedTodayByPage",
-            // "query": {
-            //     "createtime": {
-            //         "$gt": timestamp_start
-            //     }
-            // }
+            "query": {
+                "createdate": {
+                    "$eq": new Date().toString("yyyy-MM-dd")
+                }
+            }
         });
 
         var result = yield db.find('SpeedTodayByPage');
@@ -112,7 +112,7 @@ router.get('/', function (req, res, next) {
         console.log(result);
 
 
-        res.render("pages",
+        res.render("admin",
             {
                 title: "数据概要",
                 speedData: result,
