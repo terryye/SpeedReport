@@ -9,7 +9,6 @@ function* insert (tbname, record ){
         var db = yield conn();
         var r = yield db.collection(tbname).insertOne(record);
         assert.equal(1, r.insertedCount);
-        db.close();
 }
 
 function* mapReduce(tbname,map,reduce,option){
@@ -17,24 +16,24 @@ function* mapReduce(tbname,map,reduce,option){
     var col = db.collection(tbname);
 
     var r= yield col.mapReduce(map,reduce,option);
-    db.close();
     return r
 }
 
 function* find(tbname,query){
     var db = yield conn();
     var col = db.collection(tbname);
-
     var r= yield col.find(query).toArray();
-    db.close();
+
     return r;
 }
 
+var _conn;
 function* conn (){
-    var _conn = yield MongoClient.connect(mongoDSN);
+    if(!_conn){
+        _conn = yield MongoClient.connect(mongoDSN);
+    }
     return _conn;
 }
-
 
 module.exports = {
     insert : insert,
