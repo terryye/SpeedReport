@@ -6,11 +6,11 @@ var db  = require("./db");
  * @param pageIds
  * @returns {Array}
  */
-function * fectchByIds(pageIds){
+function * $fectchByIds(pageIds){
 
     var pageList = [];
     if(pageIds.length > 0){
-        pageList = yield db.find('page', {
+        pageList = yield db.$find('page', {
             id : {$in : pageIds}
         });
     }
@@ -25,7 +25,7 @@ function * fectchByIds(pageIds){
 }
 
 module.exports = {
-    fetchByIds : fectchByIds
+    $fetchByIds : $fectchByIds
 };
 
 

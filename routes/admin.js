@@ -39,7 +39,6 @@ router.get('/', function (req, res, next) {
                 counts: {}
             };
 
-
             values.forEach(function (val) {
 
                 for (var k in val.timemarks) {
@@ -75,18 +74,12 @@ router.get('/', function (req, res, next) {
             return res;
         }
 
-        yield db.mapReduce('rawdata', map, reduce, {
+        yield db.$mapReduce('rawdata', map, reduce, {
                     "finalize": finalizeFun,
-            "scope": {"maxTimeMarks": config.maxTimeMarks},
             "out": "SpeedTodayByPage",
-            "query": {
-                "createdate": {
-                    "$eq": new Date().toString("yyyy-MM-dd")
-                }
-            }
         });
 
-        var result = yield db.find('SpeedTodayByPage');
+        var result = yield db.$find('SpeedTodayByPage');
 
 
         var timemarkAlias = conf_timemark;
@@ -97,8 +90,8 @@ router.get('/', function (req, res, next) {
             pageIds.push(el._id.pageid);
         })
 
-        var bizinfo = yield biz.fetchAll();
-        var pageinfo = yield page.fetchByIds(pageIds);
+        var bizinfo = yield biz.$fetchAll();
+        var pageinfo = yield page.$fetchByIds(pageIds);
 
 
         result.forEach(function (item) {

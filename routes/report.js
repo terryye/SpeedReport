@@ -4,6 +4,7 @@ var db = require("../mod/db");
 var co = require('co');
 var date = require('datejs');
 var fs = require('fs');
+var config = require("../mod/config");
 
 
 /* GET home page. */
@@ -45,27 +46,90 @@ router.get('/', function (req, res, next) {
             timemarks: [],
         };
 
-        for (var i = 0; i <= 20; i++) {
+        for (var i = 0; i < 30; i++) {
             fields.timemarks.push(i + "");
         }
 
-        //通用参数 sid 业务id   pageid= 页面id , 容器版本(手雷V1/V2)， 页面版本(1,2,3)
-        var record = processData(req.query, fields);
+        var record = _processData(req.query, fields);
+        yield db.$insert('rawdata', record);
 
-        console.log(record);
-        yield db.insert('rawdata', record);
 
-    }).catch(function () {
+        yield _$updateByHours(record);
+
+    }).catch(function (err) {
+
+        //todo: 错误处理
+        console.log(err)
     });
 
     var emptybmp = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
-    var img =new Buffer(emptybmp, 'base64');;
-    res.writeHead(200, {'Content-Type': 'image/x-ms-bmp' });
+    var img = new Buffer(emptybmp, 'base64');
+    res.writeHead(200, {'Content-Type': 'image/x-ms-bmp'});
     res.end(img, 'binary');
 
 });
 
-function processData(query, fields) {
+function * _$updateByHours(record) {
+    var hour = parseInt(new Date().toString("yyyyMMddhh"));
+    var filter = {
+        pageid: {$eq: record.pageid},
+        hour: {$eq: hour},
+    }
+    var tbname = "speedByHours";
+
+    var update = {
+
+        $inc: {
+//        timing : {},
+//        timingCounts  : {},
+//        timemarksCounts : {},
+//        timemarks: {}
+        }
+    }
+
+    var insert = {
+        pageid: record.pageid,
+        hour: hour,
+        timemarks: record.timemarks,
+        timemarksCounts: {},
+        timing: record.timing,
+        timingCounts: {}
+    }
+
+    var _dealTime = function (_type, _insert, _update) {
+        if (_type == "timemarks") {
+            var tms = record.timemarks;
+            delete(tms[0]);
+        } else if (_type == "timing") {
+            var tms = record.timing;
+        } else {
+            return false;
+        }
+
+        if (!tms) {
+            return false;
+        }
+
+        for (var k in tms) {
+            _update.$inc[_type + '.' + k] = tms[k];
+            _update.$inc[_type + 'Counts.' + k] = 1;
+            _insert[_type + "Counts"][k] = 1;
+        }
+
+    }
+
+    _dealTime("timemarks",insert, update);
+    _dealTime("timing",insert, update);
+
+    var r =yield db.$updateOne(tbname, filter, update);
+
+    //如果还没有该条纪录,则创建纪录。
+    if (r.matchedCount == 0) {
+        yield db.$insert(tbname,insert);
+    }
+}
+
+function _processData(query, fields) {
 
     var record = {};
 
@@ -108,11 +172,14 @@ function processData(query, fields) {
         record['timemarks'] = timemarks;
     }
 
-     var timing = _parsingTimeJson('timing', fields.timing);
-     if (timing != null) {
-        record['timing'] = timing;
-     }
 
+
+    if(Math.random() < config.get("timingChance")){
+        var timing = _parsingTimeJson('timing', fields.timing);
+        if (timing != null)  {
+            record['timing'] = timing;
+        }
+    }
     record.createtime = (new Date()).getTime();
     record.createdate = (new Date()).toString('yyyy-MM-dd');
 

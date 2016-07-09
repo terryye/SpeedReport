@@ -10,8 +10,8 @@ var db  = require("./db");
  * @returns {Array}
  */
 
-function * fetchAll(){
-    var bizList = yield db.find('biz');
+function * $fetchAll(){
+    var bizList = yield db.$find('biz');
 
     var result = {};
 
@@ -23,5 +23,5 @@ function * fetchAll(){
 }
 
 module.exports = {
-    fetchAll : fetchAll
+    $fetchAll : $fetchAll
 };
