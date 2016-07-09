@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var useragent = require('express-useragent');
 
 var report = require('./routes/report');
 //var users = require('./routes/users');
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 6000}));
-
+app.use(useragent.express());
 
 app.use('/report', report );
 //app.use('/users',  users );

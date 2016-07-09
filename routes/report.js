@@ -9,6 +9,16 @@ var config = require("../mod/config");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+
+    console.log("deviceAgent",req.useragent);
+    var ua = req.useragent
+    var uaNeed = {
+        browser : ua.browser,
+        version : ua.version,
+        os : ua.os,
+        platform:ua.platform
+    };
+
     co(function*() {
         //请求需要的字段
         var fields = {
@@ -51,6 +61,8 @@ router.get('/', function (req, res, next) {
         }
 
         var record = _processData(req.query, fields);
+        record.ua = uaNeed;
+
         yield db.$insert('rawdata', record);
 
 
