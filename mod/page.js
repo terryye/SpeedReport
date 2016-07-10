@@ -1,4 +1,4 @@
-var db  = require("./db");
+var db = require("./db");
 
 
 /**
@@ -6,17 +6,35 @@ var db  = require("./db");
  * @param pageIds
  * @returns {Array}
  */
-function * $fectchByIds(pageIds){
+function * $fectchByIds(pageIds) {
 
     var pageList = [];
-    if(pageIds.length > 0){
+    if (pageIds.length > 0) {
         pageList = yield db.$find('page', {
-            id : {$in : pageIds}
+            id: {$in: pageIds}
         });
     }
 
     var result = {};
-    pageList.forEach(function(page){
+    pageList.forEach(function (page) {
+        result[page.id] = page;
+
+    });
+
+    return result;
+}
+
+
+function * $fetchByBizId(bizid) {
+
+    bizid = parseInt(bizid);
+
+    var pageList = yield db.$find('page', {
+        bizid: {$eq: bizid}
+    });
+    
+    var result = {};
+    pageList.forEach(function (page) {
         result[page.id] = page;
 
     });
@@ -25,7 +43,8 @@ function * $fectchByIds(pageIds){
 }
 
 module.exports = {
-    $fetchByIds : $fectchByIds
+    $fetchByIds: $fectchByIds,
+    $fetchByBizId: $fetchByBizId
 };
 
 

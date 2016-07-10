@@ -1,52 +1,58 @@
 <% include header.ejs %>
 <div class="container-fluid">
-  <div class="row">
-    <% include left.ejs %>
+    <div class="row">
+        <% include left.ejs %>
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <ul>
-        <form class="form-inline">
-          <div class="form-group">
-            <select  class="form-control input-sm" ><option>业务名称</option></select>
-            <select  class="form-control input-sm"><option>页面名称</option></select>
-            <label for="date_start">开始时间</label><input type="date"  id="date_start" class="form-control input-sm">
-            <label for="date_end">结束时间</label><input type="date" id="date_end" class="form-control input-sm">
-            <button type="submit" class="btn btn-primary btn-sm">查询</button>
-          </div>
-        </form>
-      </ul>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">业务概要</h1>
+            <form class="form-inline" action="./">
+                <div class="form-group">
+                    <label for="bizid">业务</label>
+                    <select class="form-control input-sm" name="bizid" id="bizid">
+                        <option value="-1">全部</option>
+                        <% for(var k in bizInfo){ var item = bizInfo[k]; %>
+                        <option value="<%= item.bizid %>" <%= item.bizid == query.bizid ? "selected" : "" %> ><%= item.name %></option>
+                        <% } %>
+                    </select>
+                    <label for="date_end">日期</label> <input type="date" id="date" name="date"
+                                                            class="form-control input-sm" value="<%= query.date %>">
+                    <button type="submit" class="btn btn-primary btn-sm">查询</button>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>业务名</th>
+                        <th>页面名称</th>
+                        <th>日期</th>
+                        <th><%= tbHeader['t1'] %></th>
+                        <th><%= tbHeader['t2'] %></th>
+                        <th><%= tbHeader['t3'] %></th>
+                        <th><%= tbHeader['t4'] %></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>业务名</th>
-            <th>页面名称</th>
-            <th>日期</th>
-            <th><%= tbHeader['t1']%></th>
-            <th><%= tbHeader['t2']%></th>
-            <th><%= tbHeader['t3']%></th>
-            <th><%= tbHeader['t4']%></th>
-          </tr>
-          </thead>
-          <tbody>
+                    <% speedData.forEach( function(item){ %>
+                    <tr>
+                        <td><%= item.bizInfo.name %></td>
+                        <td><%= item.pageInfo.name %></td>
+                        <td><%= item.createdate %></td>
+                        <% [1, 2, 3, 4].forEach(function (k){ %>
+                        <td><%= item.timemarks[k] %> [<%= item.timemarksCounts[k] %>]</td>
+                        <% }) %>
+                    </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
 
-          <% speedData.forEach( function(item){ %>
-          <tr>
-            <td><%= item.bizInfo.name %></td>
-            <td><%= item.pageInfo.name %></td>
-            <td><%= item._id.createdate %></td>
-            <td><%= item.value.timemarks[1] %></td>
-            <td><%= item.value.timemarks[2] %></td>
-            <td><%= item.value.timemarks[3] %></td>
-            <td><%= item.value.timemarks[4] %></td>
-          </tr>
-          <% }) %>
-          </tbody>
-        </table>
-      </div>
+                <% if(!speedData || speedData.length == 0 ) { %>
+                    <div class="well">Sorry, 没有符合条件的数据。</div>
+                <% } %>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </div>
 <% include footer.ejs %>

@@ -9,8 +9,7 @@ var config = require("../mod/config");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-
-    console.log("deviceAgent",req.useragent);
+    
     var ua = req.useragent
     var uaNeed = {
         browser : ua.browser,
@@ -82,7 +81,7 @@ router.get('/', function (req, res, next) {
 });
 
 function * _$updateByHours(record) {
-    var hour = parseInt(new Date().toString("yyyyMMddhh"));
+    var hour = parseInt(new Date().toString("yyyyMMddHH"));
     var filter = {
         pageid: {$eq: record.pageid},
         hour: {$eq: hour},
