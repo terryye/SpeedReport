@@ -9,13 +9,13 @@ var config = require("../mod/config");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    
+
     var ua = req.useragent
     var uaNeed = {
-        browser : ua.browser,
-        version : ua.version,
-        os : ua.os,
-        platform:ua.platform
+        browser: ua.browser,
+        version: ua.version,
+        os: ua.os,
+        platform: ua.platform
     };
 
     co(function*() {
@@ -64,7 +64,6 @@ router.get('/', function (req, res, next) {
 
         yield db.$insert('rawdata', record);
 
-
         yield _$updateByHours(record);
 
     }).catch(function (err) {
@@ -110,6 +109,9 @@ function * _$updateByHours(record) {
     var _dealTime = function (_type, _insert, _update) {
         if (_type == "timemarks") {
             var tms = record.timemarks;
+            if (tms['1'] && tms[1] > 10000) {
+                return false;
+            }
             delete(tms[0]);
         } else if (_type == "timing") {
             var tms = record.timing;
@@ -126,17 +128,18 @@ function * _$updateByHours(record) {
             _update.$inc[_type + 'Counts.' + k] = 1;
             _insert[_type + "Counts"][k] = 1;
         }
-
+        return true;
     }
 
-    _dealTime("timemarks",insert, update);
-    _dealTime("timing",insert, update);
+    var r1 = _dealTime("timemarks", insert, update);
+    var r2 = _dealTime("timing", insert, update);
 
-    var r =yield db.$updateOne(tbname, filter, update);
-
-    //如果还没有该条纪录,则创建纪录。
-    if (r.matchedCount == 0) {
-        yield db.$insert(tbname,insert);
+    if (r1 && r2) {
+        var r = yield db.$updateOne(tbname, filter, update);
+        //如果还没有该条纪录,则创建纪录。
+        if (r.matchedCount == 0) {
+            yield db.$insert(tbname, insert);
+        }
     }
 }
 
@@ -179,15 +182,15 @@ function _processData(query, fields) {
     }
 
     var timemarks = _parsingTimeJson('timemarks', fields.timemarks);
+
     if (timemarks != null) {
         record['timemarks'] = timemarks;
     }
 
 
-
-    if(Math.random() < config.get("timingChance")){
+    if (Math.random() < config.get("timingChance")) {
         var timing = _parsingTimeJson('timing', fields.timing);
-        if (timing != null)  {
+        if (timing != null) {
             record['timing'] = timing;
         }
     }
