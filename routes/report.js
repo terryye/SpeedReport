@@ -109,10 +109,13 @@ function * _$updateByHours(record) {
     var _dealTime = function (_type, _insert, _update) {
         if (_type == "timemarks") {
             var tms = record.timemarks;
-            if (tms['1'] && tms[1] > 10000) {
-                return false;
-            }
             delete(tms[0]);
+            for(var k in tms){
+                var gt = k == 1 ? 10000 : 600000;
+                if( tms[k] > gt || tms[k] < 0){
+                    return false;
+                }
+            }
         } else if (_type == "timing") {
             var tms = record.timing;
         } else {
