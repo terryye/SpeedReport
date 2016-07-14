@@ -62,8 +62,9 @@ router.get('/', function (req, res, next) {
         var record = _processData(req.query, fields);
         record.ua = uaNeed;
 
-        yield db.$insert('rawdata', record);
-
+        if (Math.random() < config.get("recordChance")) {
+            yield db.$insert('rawdata', record);
+        }
         yield _$updateByHours(record);
 
     }).catch(function (err) {
@@ -146,6 +147,7 @@ function * _$updateByHours(record) {
     }
 }
 
+
 function _processData(query, fields) {
 
     var record = {};
@@ -191,12 +193,11 @@ function _processData(query, fields) {
     }
 
 
-    if (Math.random() < config.get("timingChance")) {
-        var timing = _parsingTimeJson('timing', fields.timing);
-        if (timing != null) {
-            record['timing'] = timing;
-        }
+    var timing = _parsingTimeJson('timing', fields.timing);
+    if (timing != null) {
+        record['timing'] = timing;
     }
+
     record.createtime = (new Date()).getTime();
     record.createdate = (new Date()).toString('yyyy-MM-dd');
 
