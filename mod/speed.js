@@ -84,7 +84,7 @@ function * $fetchByDate(_strDate, _arrPageId) {
             var prevTmsCounts = prev[ns+'Counts'];
             for(var k in tms){
                 if(prevTms[k] == undefined){
-                    prevTms[k] = tms[k] * cnts[k];
+                    prevTms[k] = tms[k] ;
                     prevTmsCounts[k] = cnts[k];
                 }else{
                     prevTms[k] += tms[k];
