@@ -25,6 +25,11 @@ var db = require("./db");
  */
 var tbname = "speedByHours";
 
+/**
+ * db.speedByHours.dropIndexes()
+ * db.speedByHours.ensureIndex({pageid:1})
+ * db.speedByHours.ensureIndex({pageid:1,hour:-1},{unique: true})
+ */
 
 /**
  * 获取当日按小时的测速数据
