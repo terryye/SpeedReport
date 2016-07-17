@@ -1,4 +1,10 @@
-module.exports = function () {
+//    var autoIncrement = require('mongoose-auto-increment');
+module.exports = function (mongoose, modelName) {
+    var schema = getSchema();
+    return mongoose.model(modelName, new mongoose.Schema(schema))
+};
+
+function getSchema() {
     var maxTimeMarks = 30,
         recordSchema = {
             pageId: Number,
@@ -41,9 +47,9 @@ module.exports = function () {
         };
 
     //defeine #maxTimeMarks
-    for(var i=0; i<maxTimeMarks; i++){
+    for (var i = 0; i < maxTimeMarks; i++) {
         recordSchema.timeMarks[i] = Number;
     }
 
     return recordSchema;
-};
+}
