@@ -5,7 +5,7 @@ module.exports = function (app, co) {
             co(function *() {
                 //组织数据
                 var record = {
-                        pageId: req.query.pageid,
+                        pageId: Number(req.query.pageid),
                         timings: JSON.parse(req.query.timing),
                         timeMarks: JSON.parse(req.query.timemarks),
                         ua: {

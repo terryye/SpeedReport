@@ -2,7 +2,7 @@ var
     path = require('path'),
     root = path.resolve(__dirname, '..'),
     config = {
-        env : "dev",
+        env : "prod",
         db: { // 数据库配置
             uri: 'mongodb://localhost:27017/speed',
             opts: {
@@ -28,13 +28,10 @@ var
             "4": "全部加载完成"
         },
         record:{
-            chance: 1,    // 每一条记录数据入库的比例为 100%
+            chance: 0.1,    // 每一条记录数据入库的比例为 100%
             minTimeValue:0, //时间点最小值为0
             maxTimeValue : 600*1000 // 时间点最大值为10分钟
-        },
+        }
     };
 
 module.exports = config;
-
-
-

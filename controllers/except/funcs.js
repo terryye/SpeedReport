@@ -1,19 +1,27 @@
 var
     funcs = {
-        // 格式化日期
 //        date: require('datejs'),
+        _: require("lodash"),
         moment: require('moment'),
+        escapeHTML : require("escape-html"),
+
         // 统一服务错误处理
         handleErr: function (res, err) {
             console.log();
             res.status(500);
-            res.json({
-                error: err,
-                message: err.message,
-                errorStack: err.stack
-            })
-        },
-        extend: require('util')._extend
+            if (C.env == "dev"){
+                res.json({
+                    error: err,
+                    message: err.message,
+                    errorStack: err.stack
+                })
+            }else{
+                res.json({
+                    error: "System Busy"
+                })
+            }
+        }
+
     };
 
 module.exports = funcs;

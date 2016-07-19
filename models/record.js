@@ -1,4 +1,3 @@
-//    var autoIncrement = require('mongoose-auto-increment');
 module.exports = function (mongoose, modelName) {
     var schema = getSchema();
     return mongoose.model(modelName, new mongoose.Schema(schema))

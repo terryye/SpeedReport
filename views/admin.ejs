@@ -7,11 +7,11 @@
             <h1 class="page-header">业务概要</h1>
             <form class="form-inline" action="./">
                 <div class="form-group">
-                    <label for="bizid">业务</label>
-                    <select class="form-control input-sm" name="bizid" id="bizid">
+                    <label for="projectId">业务</label>
+                    <select class="form-control input-sm" name="projectId" id="projectId">
                         <option value="-1">全部</option>
-                        <% for(var k in bizInfo){ var item = bizInfo[k]; %>
-                        <option value="<%= item.bizid %>" <%= item.bizid == query.bizid ? "selected" : "" %> ><%= item.name %></option>
+                        <% for(var k in projectInfo){ var item = projectInfo[k]; %>
+                        <option value="<%= item._id %>" <%= item._id == query.projectId ? "selected" : "" %> ><%= item.name %></option>
                         <% } %>
                     </select>
                     <label for="date_end">日期</label> <input type="date" id="date" name="date"
@@ -26,28 +26,28 @@
                         <th>业务名</th>
                         <th>页面名称</th>
                         <th>日期</th>
-                        <th><%= tbHeader['t1'] %></th>
-                        <th><%= tbHeader['t2'] %></th>
-                        <th><%= tbHeader['t3'] %></th>
-                        <th><%= tbHeader['t4'] %></th>
+                        <th><%= tbHeader['1'] %></th>
+                        <th><%= tbHeader['2'] %></th>
+                        <th><%= tbHeader['3'] %></th>
+                        <th><%= tbHeader['4'] %></th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    <% speedData.forEach( function(item){ %>
+                    <% speedResult.forEach( function(item){ %>
                     <tr>
-                        <td><%= item.bizInfo.name %></td>
+                        <td><%= item.projectInfo.name %></td>
                         <td><%= item.pageInfo.name %></td>
                         <td><%= item.createdate %></td>
                         <% [1, 2, 3, 4].forEach(function (k){ %>
-                        <td><%= item.timemarks[k] %> [<%= item.timemarksCounts[k] %>]</td>
+                        <td><%= item.timeMarks[k] %> [<%= item.timeMarksCount[k] %>]</td>
                         <% }) %>
                     </tr>
                     <% }) %>
                     </tbody>
                 </table>
 
-                <% if(!speedData || speedData.length == 0 ) { %>
+                <% if(!speedResult || speedResult.length == 0 ) { %>
                     <div class="well">Sorry, 没有符合条件的数据。</div>
                 <% } %>
             </div>
