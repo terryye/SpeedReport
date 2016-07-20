@@ -32,6 +32,7 @@ app.use(useragent.express());
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: 6000}));
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
 
 require(path.join(C.dir.model, C.exceptFolder)); // model初始化入口
 require(path.join(C.dir.controller, C.exceptFolder))(app); // router初始化入口
