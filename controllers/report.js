@@ -57,7 +57,7 @@ function calculateResultByHour(record) {
         updateObj = {
             $inc: {} //init $inc field.
         };
-    insertObj = _.merge(insertObj, record); //插入数据时, 部分数据采用record的数据。
+    insertObj = F._.merge(insertObj, record); //插入数据时, 部分数据采用record的数据。
 
     //timeMarks 必须存在, timings可以不存在。
     ['timeMarks', 'timings'].forEach(function (dataType) {

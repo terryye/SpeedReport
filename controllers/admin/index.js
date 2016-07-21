@@ -15,7 +15,7 @@ module.exports = function (app, co) {
                 var arrPageIds;
                 var pageCond = projectId > 0 ? {projectId: projectId} :  {_id:{$in:defaultPageIds}};
                 var pageInfo = yield M.page.find(pageCond);
-                pageInfo = _.keyBy(pageInfo, '_id');
+                pageInfo = F._.keyBy(pageInfo, '_id');
                 //console.log("pageInfo", pageInfo);
 
                 arrPageIds = Object.keys(pageInfo);
@@ -23,8 +23,8 @@ module.exports = function (app, co) {
 
                 //获取所有的项目列表
                 var projectInfo = yield M.project.find();
-                projectInfo = _.keyBy(projectInfo, '_id');
-                console.log("projectInfo", projectInfo);
+                projectInfo = F._.keyBy(projectInfo, '_id');
+                //console.log("projectInfo", projectInfo);
 
                 //获取所有的测速记录
                 var speedResult = yield findByDate(strDate, arrPageIds);

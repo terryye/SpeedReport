@@ -20,11 +20,10 @@ var
 global.C = require('./config');
 global.M = {};
 global.F = require(path.join(C.dir.controller, C.exceptFolder, 'funcs'));
-global._ = require("lodash");
 
 
 app.use(favicon(path.join(C.dir.root, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
