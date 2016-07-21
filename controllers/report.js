@@ -5,16 +5,16 @@ module.exports = function (app, co) {
             co(function *() {
                 //组织数据
                 var record = {
-                        pageId: Number(req.query.pageid),
-                        timings: JSON.parse(req.query.timing),
-                        timeMarks: JSON.parse(req.query.timemarks),
-                        ua: {
-                            browser: req.useragent.browser,
-                            version: req.useragent.version,
-                            os: req.useragent.os,
-                            platform: req.useragent.platform
-                        }
-                    };
+                    pageId: Number(req.query.pageid),
+                    timings: req.query.timing ? JSON.parse(req.query.timing) : null,
+                    timeMarks: JSON.parse(req.query.timemarks),
+                    ua: {
+                        browser: req.useragent.browser,
+                        version: req.useragent.version,
+                        os: req.useragent.os,
+                        platform: req.useragent.platform
+                    }
+                };
 
                 //计算统计数据
                 var resultHour = calculateResultByHour(record);
@@ -33,7 +33,7 @@ module.exports = function (app, co) {
                 }
 
                 //入库流水数据
-                if(Math.random() < C.record.chance ){
+                if (Math.random() < C.record.chance) {
                     M.record.create(record);
                 }
 
@@ -50,7 +50,7 @@ function calculateResultByHour(record) {
 
     var
         insertObj = {
-            createHour:  F.moment().format("YYYYMMDDHH"),
+            createHour: F.moment().format("YYYYMMDDHH"),
             timeMarksCount: {},
             timingsCount: {}
         },
@@ -59,34 +59,36 @@ function calculateResultByHour(record) {
         };
     insertObj = _.merge(insertObj, record); //插入数据时, 部分数据采用record的数据。
 
-    console.log(record);
+    //timeMarks 必须存在, timings可以不存在。
     ['timeMarks', 'timings'].forEach(function (dataType) {
         var
             countSuffix = "Count",
             tms = insertObj[dataType];
 
         if (dataType == "timeMarks") {
+
+            if (!tms) {
+                throw new Error(`Invalid  timeMarks Value`);
+            }
+
             if (tms["0"]) {
                 delete(tms["0"]);  //timeMarks[0]为上报的时间点起始点,没有统计意义。
             }
-            console.log(record);
             //判断数据是否合法,不合法则抛弃
             Object.keys(tms).forEach(function (_key) {
-                if (tms[_key] >C.record.maxTimeValue  || tms[_key] < C.record.minTimeValue) {
+                if (tms[_key] > C.record.maxTimeValue || tms[_key] < C.record.minTimeValue) {
                     throw new Error("Invalid timeMark Value ");
                 }
             })
         }
 
-        if (!tms) {
-            throw new Error(`Invalid  ${dataType} Value`);
+        if (tms) {
+            Object.keys(tms).forEach(function (_key) {
+                updateObj.$inc[`${dataType}.${_key}`] = tms[_key];
+                updateObj.$inc[`${dataType}${countSuffix}.${_key}`] = 1;
+                insertObj[`${dataType}${countSuffix}`][_key] = 1;
+            })
         }
-
-        Object.keys(tms).forEach(function (_key) {
-            updateObj.$inc[`${dataType}.${_key}`] = tms[_key];
-            updateObj.$inc[`${dataType}${countSuffix}.${_key}`] = 1;
-            insertObj[`${dataType}${countSuffix}`][_key] = 1;
-        })
 
     });
 
