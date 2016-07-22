@@ -2,7 +2,7 @@ var
     path = require('path'),
     root = path.resolve(__dirname, '..'),
     config = {
-        env : "prod",
+        env : "dev",
         db: { // 数据库配置
             uri: 'mongodb://localhost:27017/speed',
             opts: {
