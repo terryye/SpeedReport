@@ -35,6 +35,7 @@ module.exports = function (app) {
 
     // default
     app.use(function(req, res) {
+        res.status(404);
         res.json({
             status: 'warnning',
             msg: '无此api'

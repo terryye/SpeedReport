@@ -2,7 +2,7 @@
 var
     express = require('express'),
     path = require('path'),
-    logger = require('morgan'),
+    log4js = require('log4js'),
     favicon = require('serve-favicon'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
@@ -22,8 +22,10 @@ global.M = {};
 global.F = require(path.join(C.dir.controller, C.exceptFolder, 'funcs'));
 
 
+log4js.configure(C.log);
+app.use(log4js.connectLogger(log4js.getLogger("app"), {level: 'auto'}));
 app.use(favicon(path.join(C.dir.root, 'public', 'favicon.ico')));
-//app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());

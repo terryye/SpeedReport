@@ -2,7 +2,7 @@ var
     path = require('path'),
     root = path.resolve(__dirname, '..'),
     config = {
-        env : "dev",
+        env : "prod",
         db: { // 数据库配置
             uri: 'mongodb://localhost:27017/speed',
             opts: {
@@ -32,9 +32,27 @@ var
             minTimeValue:0, //时间点最小值为0
             maxTimeValue : 600*1000 // 时间点最大值为10分钟
         },
+        log:{
+            "appenders":
+                [
+                    {
+                        "type":"console",
+                        "category":"console"
+                    },
+                    {
+                        "category":"app",
+                        "type": "file",
+                        "filename": "./logs/app.log",
+                        "maxLogSize": 104800,
+                        "backups": 10
+                    }
+                ],
+            "replaceConsole": true,
+            "levels":{
+                "app" : "INFO"
+            }
+        }
     };
 
+console.log("start in DEV env");
 module.exports = config;
-
-
-

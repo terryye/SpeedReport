@@ -7,7 +7,6 @@ var
 
         // 统一服务错误处理
         handleErr: function (res, err) {
-            console.log();
             res.status(500);
             if (C.env == "dev"){
                 res.json({

@@ -17,6 +17,7 @@
     "express": "~4.13.1",
     "express-useragent": "^0.2.4",
     "lodash": "^4.13.1",
+    "log4js": "^0.6.38",
     "moment": "^2.14.1",
     "mongodb": "^2.1.21",
     "mongoose": "^4.5.3",
