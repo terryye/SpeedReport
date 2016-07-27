@@ -15,8 +15,12 @@
  * 然后在测速系统的后台配置ajax耗时为 (时间点6-时间点5) 即可。
  *
  * 上报接口 Speed.report(pageid, _timemarks); //pageid为页面的id,可在管理后台自行申请。
+ * 可以配置自定义名称的上报点
+ * 
+ *
  *
  */
+
 
 (function (root, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
@@ -28,7 +32,6 @@
     }
 
 })(window, function (root, param) {
-
  //   var _reportUrl = "http://speed.showapp.xunlei.com/report/";
     var _reportUrl = "http://localhost:3001/report";
 //    _reportUrl ="http://localhost/dashboard/images/bitnami-xampp.png";
