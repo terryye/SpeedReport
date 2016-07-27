@@ -5,7 +5,7 @@ module.exports = function (app, co) {
             co(function *() {
 
                 var query = req.query;
-                query.dateStart  = query.dateStart ||  F.moment().subtract(10, "days").format("YYYY-MM-DD");
+                query.dateStart  = query.dateStart ||  F.moment().subtract(15, "days").format("YYYY-MM-DD");
                 query.dateEnd  = query.dateEnd ||  F.moment().format("YYYY-MM-DD");
 
                 var strDateStart = F.escapeHTML(query.dateStart);
@@ -21,6 +21,7 @@ module.exports = function (app, co) {
 
                 //获取最近10天的测速记录
                 var speedResult = yield findByDate(strDateStart, strDateEnd, pageId);
+                speedResult = F._.orderBy(speedResult,['createDate'],['desc']);
                 //console.log("speedResult", speedResult);
 
                 //获取所有的项目列表
@@ -123,6 +124,7 @@ function * findByDate(_strDateStart, _strDateEnd, _pageId) {
     var col = M.resultByHour.collection;
 
     var result = yield col.group(_keys, _condition, _initial, _reduce, _finalize, true);
+
 
     return result;
 }
