@@ -1,41 +1,42 @@
 module.exports = function (app, co) {
-    app // 文章列表
-        .route('/admin/')
+    app // 某个页面的数据
+        .route('/admin/page')
         .get(function (req, res) {
             co(function *() {
 
                 var query = req.query;
+                query.dateStart  = query.dateStart ||  F.moment().subtract(10, "days").format("YYYY-MM-DD");
+                query.dateEnd  = query.dateEnd ||  F.moment().format("YYYY-MM-DD");
 
-                query.date = query.date || F.moment().format("YYYY-MM-DD");
-                var strDate =F.escapeHTML(query.date);
-                
-                var projectId = Number(query.projectId);
+                var strDateStart = F.escapeHTML(query.dateStart);
+                var strDateEnd = F.escapeHTML(query.dateEnd);
 
+                var pageId = Number(query.pageId);
                 var timeMarkAlias = C.timeMarkAlias;
 
                 //获取结果中的所有页面id的业务名称和页面名称
-                var defaultPageIds = [101];
-                var arrPageIds;
-                var pageCond = projectId > 0 ? {projectId: projectId} :  {_id:{$in:defaultPageIds}};
-                var pageInfo = yield M.page.find(pageCond);
-                pageInfo = F._.keyBy(pageInfo, '_id');
-                //console.log("pageInfo", pageInfo);
+                var thisPageInfo = yield M.page.findOne({_id: pageId});
+                var projectId = thisPageInfo['projectId'];
+                //console.log("thisPageInfo", thisPageInfo);
 
-                arrPageIds = Object.keys(pageInfo);
-                //console.log("arrPageIds", arrPageIds);
+                //获取最近10天的测速记录
+                var speedResult = yield findByDate(strDateStart, strDateEnd, pageId);
+                //console.log("speedResult", speedResult);
 
                 //获取所有的项目列表
                 var projectInfo = yield M.project.find();
                 projectInfo = F._.keyBy(projectInfo, '_id');
-                //console.log("projectInfo", projectInfo);
 
-                //获取所有的测速记录
-                var speedResult = yield findByDate(strDate, arrPageIds);
-                //console.log("speedResult", speedResult);
+                var thisProjectInfo = projectInfo[projectId];
 
+                //获取该项目下的所有页面的列表
+                var pageInfo = yield M.page.find({projectId: projectId});
+                pageInfo = F._.keyBy(pageInfo, '_id');
 
                 //补充记录所需的页面和项目信息。
-                speedResult.forEach(function(_el){
+
+                speedResult.forEach(function (_el) {
+
                     //补充页面名称
                     _el.pageInfo = pageInfo[_el.pageId] ? pageInfo[_el.pageId] : {};
 
@@ -45,16 +46,15 @@ module.exports = function (app, co) {
                     _el.projectInfo = projectInfo[_el.projectId] ? projectInfo[_el.projectId] : {};
 
                 });
+                console.log(speedResult);
 
-                //console.log(speedResult);
-
-                res.render("admin",
+                res.render("page",
                     {
-                        title: "数据概要",
+                        title: "数据详情",
                         speedResult: speedResult,
                         tbHeader: timeMarkAlias,
                         pageInfo: pageInfo,
-                        projectInfo: projectInfo,
+                        thisProjectInfo: thisProjectInfo,
                         query: req.query
                     }
                 );
@@ -64,33 +64,33 @@ module.exports = function (app, co) {
 };
 
 
-function * findByDate(_strDate, _arrPageId) {
+function * findByDate(_strDateStart, _strDateEnd, _pageId) {
 
-    var _date = _strDate ? F.moment(_strDate) : F.moment();
+    var _dateStart = _strDateStart === null ? F.moment().subtract(10, "days") : F.moment(_strDateStart);
+    var _dateEnd = _strDateEnd === null ? F.moment() : F.moment(_strDateEnd);
 
-    var _dateMin = parseInt(_date.format("YYYYMMDD00"));
-    var _dateMax = parseInt(_date.format("YYYYMMDD24"));
-
-    var _keys = {
-        pageId: true
+    var _dateMin = Number(_dateStart.format("YYYYMMDD00"));
+    var _dateMax = Number(_dateEnd.format("YYYYMMDD24"));
+    var _keys = function (doc) {
+        return {
+            pageId: doc.pageId,
+            createDate: Math.floor(doc.createHour / 100)
+        };
     };
 
     var _condition = {
-             createHour: {$gte: _dateMin, $lte: _dateMax}
+        createHour: {$gte: _dateMin, $lte: _dateMax}
     };
 
-    if (_arrPageId.length > 0) {
-        _arrPageId = _arrPageId.map(Number)
-        _condition.pageId = {$in: _arrPageId}
+    if (_pageId) {
+        _condition.pageId = _pageId;
     }
-
 
     var _initial = {
         timeMarks: {},
         timeMarksCount: {},
         timings: {},
-        timingsCount: {},
-        createdate: _date.format("YYYY-MM-DD")
+        timingsCount: {}
     };
 
     var _reduce = function (doc, prev) {

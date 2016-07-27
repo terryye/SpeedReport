@@ -4,18 +4,20 @@
         <% include left.ejs %>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">业务概要</h1>
-            <form class="form-inline" action="/admin/">
+            <h1 class="page-header"> 页面详情</h1>
+            <form class="form-inline" action="./page">
                 <div class="form-group">
-                    <label for="projectId">业务</label>
-                    <select class="form-control input-sm" name="projectId" id="projectId">
-                        <option value="-1">全部</option>
-                        <% for(var k in projectInfo){ var item = projectInfo[k]; %>
-                        <option value="<%= item._id %>" <%= item._id == query.projectId ? "selected" : "" %> ><%= item.name %></option>
+                    项目: <%= thisProjectInfo.name %>
+                    <label for="projectId">页面</label>
+                    <select class="form-control input-sm" name="pageId" id="pageId">
+                        <% for(var k in pageInfo){ var item = pageInfo[k]; %>
+                        <option value="<%= item._id %>" <%= item._id == query.pageId ? "selected" : "" %> ><%= item.name %></option>
                         <% } %>
                     </select>
-                    <label for="date_end">日期</label> <input type="date" id="date" name="date"
-                                                            class="form-control input-sm" value="<%= query.date %>">
+                    <label for="dateStart">开始日期</label> <input type="date" id="dateStart" name="dateStart"
+                                                            class="form-control input-sm" value="<%= query.dateStart %>">
+                    <label for="dateEnd">结束日期</label> <input type="date" id="dateEnd" name="dateEnd"
+                                                              class="form-control input-sm" value="<%= query.dateEnd %>">
                     <button type="submit" class="btn btn-primary btn-sm">查询</button>
                 </div>
             </form>
@@ -23,27 +25,23 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>业务名</th>
                         <th>页面名称</th>
                         <th>日期</th>
                         <th><%= tbHeader['1'] %></th>
                         <th><%= tbHeader['2'] %></th>
                         <th><%= tbHeader['3'] %></th>
                         <th><%= tbHeader['4'] %></th>
-                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
 
                     <% speedResult.forEach( function(item){ %>
                     <tr>
-                        <td><%= item.projectInfo.name %></td>
                         <td><%= item.pageInfo.name %></td>
-                        <td><%= item.createdate %></td>
+                        <td><%= item.createDate %></td>
                         <% [1, 2, 3, 4].forEach(function (k){ %>
                         <td><%= item.timeMarks[k] %> [<%= item.timeMarksCount[k] %>]</td>
                         <% }) %>
-                        <td> <a href="./page?pageId=<%=item.pageId%>">查看详情</a> </td>
                     </tr>
                     <% }) %>
                     </tbody>
