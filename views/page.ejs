@@ -15,9 +15,10 @@
                         <% } %>
                     </select>
                     <label for="dateStart">开始日期</label> <input type="date" id="dateStart" name="dateStart"
-                                                            class="form-control input-sm" value="<%= query.dateStart %>">
+                                                               class="form-control input-sm"
+                                                               value="<%= query.dateStart %>">
                     <label for="dateEnd">结束日期</label> <input type="date" id="dateEnd" name="dateEnd"
-                                                              class="form-control input-sm" value="<%= query.dateEnd %>">
+                                                             class="form-control input-sm" value="<%= query.dateEnd %>">
                     <button type="submit" class="btn btn-primary btn-sm">查询</button>
                 </div>
             </form>
@@ -27,28 +28,29 @@
                     <tr>
                         <th>页面名称</th>
                         <th>日期</th>
-                        <th><%= tbHeader['1'] %></th>
-                        <th><%= tbHeader['2'] %></th>
-                        <th><%= tbHeader['3'] %></th>
-                        <th><%= tbHeader['4'] %></th>
+                        <% timeMarkAlias.forEach(function(item){ %>
+                        <th><%= item.name %></th>
+                        <% }) %>
                     </tr>
                     </thead>
                     <tbody>
 
+
                     <% speedResult.forEach( function(item){ %>
                     <tr>
+                        <td><%= item.projectInfo.name %></td>
                         <td><%= item.pageInfo.name %></td>
-                        <td><%= item.createDate %></td>
-                        <% [1, 2, 3, 4].forEach(function (k){ %>
-                        <td><%= item.timeMarks[k] %> [<%= item.timeMarksCount[k] %>]</td>
+                        <% item.timeMarksWithAlias.forEach(function (val , idx){ %>
+                        <td title="次数:<%=item.timeMarksWithAliasCount[idx]%>"><%= val %> </td>
                         <% }) %>
                     </tr>
                     <% }) %>
                     </tbody>
                 </table>
 
+
                 <% if(!speedResult || speedResult.length == 0 ) { %>
-                    <div class="well">Sorry, 没有符合条件的数据。</div>
+                <div class="well">Sorry, 没有符合条件的数据。</div>
                 <% } %>
             </div>
         </div>

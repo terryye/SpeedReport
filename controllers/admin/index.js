@@ -29,6 +29,7 @@ module.exports = function (app, co) {
                 projectInfo = F._.keyBy(projectInfo, '_id');
                 //console.log("projectInfo", projectInfo);
 
+
                 //获取所有的测速记录
                 var speedResult = yield findByDate(strDate, arrPageIds);
                 //console.log("speedResult", speedResult);
@@ -41,6 +42,17 @@ module.exports = function (app, co) {
 
                     _el.projectId = pageInfo[_el.pageId] ? pageInfo[_el.pageId].projectId : 0;
 
+                    _el.timeMarksWithAlias = [];
+                    _el.timeMarksWithAliasCount = [];
+                    timeMarkAlias.forEach(function(_item){
+                        var _start = _item.start > 0 ? _el.timeMarks[_item.start] : 0;
+                        var _end = _el.timeMarks[_item.end];
+
+                        _el.timeMarksWithAlias.push( _end - _start );
+                        _el.timeMarksWithAliasCount.push(_el.timeMarksCount[_item.end]);
+
+                    });
+
                     //补充项目信息
                     _el.projectInfo = projectInfo[_el.projectId] ? projectInfo[_el.projectId] : {};
 
@@ -52,7 +64,7 @@ module.exports = function (app, co) {
                     {
                         title: "数据概要",
                         speedResult: speedResult,
-                        tbHeader: timeMarkAlias,
+                        timeMarkAlias: timeMarkAlias,
                         pageInfo: pageInfo,
                         projectInfo: projectInfo,
                         query: req.query

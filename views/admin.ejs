@@ -26,10 +26,9 @@
                         <th>业务名</th>
                         <th>页面名称</th>
                         <th>日期</th>
-                        <th><%= tbHeader['1'] %></th>
-                        <th><%= tbHeader['2'] %></th>
-                        <th><%= tbHeader['3'] %></th>
-                        <th><%= tbHeader['4'] %></th>
+                        <%  timeMarkAlias.forEach(function(item){%>
+                        <th><%= item.name %></th>
+                        <%})%>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -40,8 +39,8 @@
                         <td><%= item.projectInfo.name %></td>
                         <td><%= item.pageInfo.name %></td>
                         <td><%= item.createdate %></td>
-                        <% [1, 2, 3, 4].forEach(function (k){ %>
-                        <td><%= item.timeMarks[k] %> [<%= item.timeMarksCount[k] %>]</td>
+                        <% item.timeMarksWithAlias.forEach(function (val , idx){ %>
+                        <td title="次数:<%=item.timeMarksWithAliasCount[idx]%>"><%= val %> </td>
                         <% }) %>
                         <td> <a href="./page?pageId=<%=item.pageId%>">查看详情</a> </td>
                     </tr>

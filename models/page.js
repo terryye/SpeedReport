@@ -7,7 +7,8 @@ module.exports = function (mongoose, modelName) {
         "name": String,
         "projectId": Number,
         "owner": String,
-        "pdm": String
+        "pdm": String,
+        "timeMarkAlias" : Array
     };
 
     var schemaObj = new mongoose.Schema(schema);

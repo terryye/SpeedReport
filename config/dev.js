@@ -20,13 +20,21 @@ var
         resourceFixUrl: '', // 静态资源web访问修正路径
         exceptFolder: 'except', // model 和 controller 中read dir排除的目录名称
         maxTimeMarks: 30,  // 最大的时间点个数
-        timeMarkAlias:{
-            "0": "起始点",
-            "1": "首元素可见时间",
-            "2": "首屏可见时间",
-            "3": "首屏可交互时间",
-            "4": "全部加载完成"
-        },
+        timeMarkAlias:[
+            {
+                "name": "首元素可见",
+                "end" : 1
+            }, {
+                "name": "首屏可见",
+                "end" : 2
+            }, {
+                "name": "首屏可交互",
+                "end" : 3
+            }, {
+                "name": "全部完成",
+                "end" : 4
+            }
+        ],
         record:{
             chance: 1,    // 每一条记录数据入库的比例为 100%
             minTimeValue:0, //时间点最小值为0

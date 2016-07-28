@@ -1,4 +1,4 @@
-var
+var util = require("util"),
     funcs = {
 //        date: require('datejs'),
         _: require("lodash"),
@@ -19,8 +19,10 @@ var
                     error: "System Busy"
                 })
             }
+        },
+        dump : function(obj){
+            console.log(util.inspect(obj,{colors:true }));
         }
-
     };
 
 module.exports = funcs;

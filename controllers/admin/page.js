@@ -34,29 +34,45 @@ module.exports = function (app, co) {
                 var pageInfo = yield M.page.find({projectId: projectId});
                 pageInfo = F._.keyBy(pageInfo, '_id');
 
+                var timeMarkAliasPage = thisPageInfo.timeMarkAlias || [];
+
+                timeMarkAlias = timeMarkAlias.concat(timeMarkAliasPage);
+
+                console.log(timeMarkAlias);
+
                 //补充记录所需的页面和项目信息。
-
                 speedResult.forEach(function (_el) {
-
                     //补充页面名称
-                    _el.pageInfo = pageInfo[_el.pageId] ? pageInfo[_el.pageId] : {};
-
-                    _el.projectId = pageInfo[_el.pageId] ? pageInfo[_el.pageId].projectId : 0;
-
+                    _el.pageInfo = thisPageInfo;
                     //补充项目信息
-                    _el.projectInfo = projectInfo[_el.projectId] ? projectInfo[_el.projectId] : {};
+                    _el.projectId = thisPageInfo.projectId;
+                    _el.projectInfo = thisProjectInfo;
+
+                    _el.timeMarksWithAlias = [];
+                    _el.timeMarksWithAliasCount = [];
+                    timeMarkAlias.forEach(function(_item){
+
+                        var _start = _item.start > 0 ? _el.timeMarks[_item.start] : 0;
+                        var _end = _el.timeMarks[_item.end];
+
+                        var _tm =  (_end - _start )  || "";
+                        _el.timeMarksWithAlias.push( _tm);
+                        _el.timeMarksWithAliasCount.push(_el.timeMarksCount[_item.end]);
+
+                    });
 
                 });
-                console.log(speedResult);
+
 
                 res.render("page",
                     {
                         title: "数据详情",
                         speedResult: speedResult,
-                        tbHeader: timeMarkAlias,
+                        timeMarkAlias: timeMarkAlias,
                         pageInfo: pageInfo,
                         thisProjectInfo: thisProjectInfo,
                         query: req.query
+
                     }
                 );
 
