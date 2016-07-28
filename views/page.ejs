@@ -38,8 +38,8 @@
 
                     <% speedResult.forEach( function(item){ %>
                     <tr>
-                        <td><%= item.projectInfo.name %></td>
                         <td><%= item.pageInfo.name %></td>
+                        <td><%= item.createDate %></td>
                         <% item.timeMarksWithAlias.forEach(function (val , idx){ %>
                         <td title="次数:<%=item.timeMarksWithAliasCount[idx]%>"><%= val %> </td>
                         <% }) %>
