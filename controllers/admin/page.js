@@ -55,7 +55,8 @@ module.exports = function (app, co) {
                         var _start = _item.start > 0 ? _el.timeMarks[_item.start] : 0;
                         var _end = _el.timeMarks[_item.end];
 
-                        var _tm =  (_end - _start )  || "";
+                        var _tm =  (_end - _start )  ? Math.ceil(_end - _start ) : "";
+
                         _el.timeMarksWithAlias.push( _tm);
                         _el.timeMarksWithAliasCount.push(_el.timeMarksCount[_item.end]);
 
