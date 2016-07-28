@@ -71,6 +71,7 @@ module.exports = function (app, co) {
                         speedResult: speedResult,
                         timeMarkAlias: timeMarkAlias,
                         pageInfo: pageInfo,
+                        thisPageInfo: thisPageInfo,
                         thisProjectInfo: thisProjectInfo,
                         query: req.query
 
