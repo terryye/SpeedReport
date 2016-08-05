@@ -34,13 +34,17 @@ module.exports = function (app, co) {
 
                 var data = req.body;
                 try{
-                    data.timeMarkAlias = JSON.parse(data.timeMarkAlias);
+                    data.timeMarkAlias = JSON.parse(data.timeMarkAlias)
+                }catch(e) {
+                    data.timeMarkAlias = {};
+                }
+
+                try {
                     var result = yield M.page.create(data);
                     res.json({
                         code:0,
                         data:result
                     });
-
                 } catch(e){
 
                     res.json({
