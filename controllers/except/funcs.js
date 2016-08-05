@@ -18,7 +18,11 @@ var util = require("util"),
             }else{
                 res.json({
                     code: -1,
-                    error: "System Busy"
+//                    error: "System Busy",
+
+                    error: err,
+                    message: err.message,
+                    errorStack: err.stack
                 })
             }
         },
