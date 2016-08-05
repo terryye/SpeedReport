@@ -33,8 +33,8 @@ module.exports = function (app, co) {
             co(function *() {
 
                 var data = req.body;
-                data.timeMarkAlias = JSON.parse(data.timeMarkAlias);
-                try {
+                try{
+                    data.timeMarkAlias = JSON.parse(data.timeMarkAlias);
                     var result = yield M.page.create(data);
                     res.json({
                         code:0,
