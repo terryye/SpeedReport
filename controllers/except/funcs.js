@@ -10,12 +10,14 @@ var util = require("util"),
             res.status(500);
             if (C.env == "dev"){
                 res.json({
+                    code: -1,
                     error: err,
                     message: err.message,
                     errorStack: err.stack
                 })
             }else{
                 res.json({
+                    code: -1,
                     error: "System Busy"
                 })
             }

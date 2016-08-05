@@ -39,7 +39,7 @@
                     <tr>
                         <td><%= item.createDate %></td>
                         <% item.timeMarksWithAlias.forEach(function (val , idx){ %>
-                        <td title="次数:<%=item.timeMarksWithAliasCount[idx]%>"><%= val %> </td>
+                        <td><span title="次数:<%=item.timeMarksWithAliasCount[idx]%>" data-toggle="tooltip"><%= val %> </span></td>
                         <% }) %>
                     </tr>
                     <% }) %>
@@ -56,3 +56,8 @@
     </div>
 </div>
 <% include footer.ejs %>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
