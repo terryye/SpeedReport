@@ -38,7 +38,7 @@ module.exports = function (app, co) {
 
                 timeMarkAlias = timeMarkAlias.concat(timeMarkAliasPage);
 
-                console.log(timeMarkAlias);
+                //console.log(timeMarkAlias);
 
                 //补充记录所需的页面和项目信息。
                 speedResult.forEach(function (_el) {

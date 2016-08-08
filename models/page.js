@@ -17,7 +17,7 @@ module.exports = function (mongoose, modelName) {
         "owner": String,
         "pdm": String,
         "timeMarkAlias" : {
-            type: String,
+            type: Array,
             validate : validateTimeMarkAlias()
         }
     };
