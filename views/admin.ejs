@@ -40,7 +40,8 @@
                         <td><%= item.pageInfo.name %></td>
                         <td><%= item.createdate %></td>
                         <% item.timeMarksWithAlias.forEach(function (val , idx){ %>
-                        <td class="tooltip-test" data-original-title="次数:<%=item.timeMarksWithAliasCount[idx]%>"><%= val %> </td>
+
+                        <td> <span title="次数:<%=item.timeMarksWithAliasCount[idx]%>" data-toggle="tooltip"><%= val %> </span></td>
                         <% }) %>
                         <td> <a href="./page?pageId=<%=item.pageId%>">查看详情</a> </td>
                     </tr>
