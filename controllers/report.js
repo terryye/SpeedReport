@@ -38,9 +38,11 @@ module.exports = function (app, co) {
                 }
 
                 var emptyImg = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
-
+/*
                 res.writeHead(200, {'Content-Type': 'image/x-ms-bmp'});
                 res.end(new Buffer(emptyImg, 'base64'), 'binary');
+*/
+                res.json({})
 
             }).catch(F.handleErr.bind(null, res))
         })

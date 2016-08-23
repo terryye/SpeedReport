@@ -33,8 +33,9 @@
 
 })(window, function (root, param) {
  //   var _reportUrl = "http://speed.showapp.xunlei.com/report/";
-    var _reportUrl = "http://localhost:3000/report";
+//    var _reportUrl = "http://localhost:3000/report";
 //    _reportUrl ="http://localhost/dashboard/images/bitnami-xampp.png";
+    var _reportUrl = "../report"
 
     var _keyMax = 30;//时间点个数.(20相当于 0...20)
 
