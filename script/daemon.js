@@ -41,6 +41,8 @@ function updateByHour(_time) {
         }
 
         console.log(F.moment().format("YYYY-MM-DD HH:mm:ss"), result);
+    }).catch(function(err){
+        console.log("err", err);
     })
 }
 
