@@ -7,7 +7,8 @@ var app = require("../app");
 var schedule = require('node-schedule');
 
 M.mongoose.connection.once("open", function () {
-    //updateByHour(F.moment());
+    updateByHour(F.moment());
+
     // runs every hours
     schedule.scheduleJob({minute: 1}, function () {
         updateByHour(F.moment().subtract(1, "hours"));
