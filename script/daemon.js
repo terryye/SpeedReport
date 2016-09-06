@@ -7,16 +7,15 @@ var app = require("../app");
 var schedule = require('node-schedule');
 
 M.mongoose.connection.once("open", function () {
-    updateByHour(F.moment());
-
-
-    schedule.scheduleJob('0 0 * * *', function () {
+    //updateByHour(F.moment());
+    // runs every hours
+    schedule.scheduleJob({minute: 1}, function () {
         updateByHour(F.moment().subtract(1, "hours"));
     });
 
-    schedule.scheduleJob('0 */10 * * *', function () {
-        updateByHour(F.moment());
-    });
+//    schedule.scheduleJob('0 */10 * * *', function () {
+//        updateByHour(F.moment());
+//   });
 
 });
 
