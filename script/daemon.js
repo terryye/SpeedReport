@@ -23,6 +23,8 @@ M.mongoose.connection.once("open", function () {
 
 function updateByHour(_time) {
     co(function *() {
+        console.log(F.moment().format("YYYY-MM-DD HH:mm:ss"), " Start calculate ", _time.format("YYYY-MM-DD HH"));
+
         var result = yield grouyByHour(_time);
 
         for (var k in result) {
