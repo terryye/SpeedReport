@@ -1,3 +1,5 @@
+// @flow
+
 // 加载依赖库，原来这个类库都封装在connect中，现在需地注单独加载
 "use strict";
 
@@ -11,7 +13,6 @@ var
     useragent = require('express-useragent'),
     app = express();
 
-
 /**
  * 全局变量/ ThinkPHP?
  * C 配置
@@ -22,7 +23,6 @@ var
 global.C = require('./config');
 global.M = {};
 global.F = require(path.join(C.dir.controller, C.exceptFolder, 'funcs'));
-
 
 log4js.configure(C.log);
 app.use(log4js.connectLogger(log4js.getLogger("app"), {level: 'auto'}));

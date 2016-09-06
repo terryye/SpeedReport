@@ -25,7 +25,7 @@ module.exports = function (mongoose, modelName) {
     var schemaObj = new mongoose.Schema(schema);
 
     //采用自增加主键
-    schemaObj.plugin(autoIncrement.plugin, modelName);
+    schemaObj.plugin(autoIncrement.plugin, {model:modelName,field: '_id',startAt:1000});
 
     return mongoose.model(modelName, schemaObj);
 
@@ -39,3 +39,4 @@ function validateTimeMarkAlias(timeMarkAlias){
         "格式不正确"
     ]
 }
+

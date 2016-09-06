@@ -40,6 +40,7 @@ var
             minTimeValue:0, //时间点最小值为0
             maxTimeValue : 600*1000 // 时间点最大值为10分钟
         },
+        updatePerRecords: 50,
         log:{
             "appenders":
                 [
@@ -50,7 +51,7 @@ var
                     {
                         "category":"app",
                         "type": "file",
-                        "filename": "./logs/app.log",
+                        "filename": path.join(root, 'logs' ,"app.log"),
                         "maxLogSize": 104800,
                         "backups": 10
                     }

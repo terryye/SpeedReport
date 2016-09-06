@@ -5,8 +5,8 @@ module.exports = function (app, co) {
             co(function *() {
 
                 var query = req.query;
-                query.dateStart  = query.dateStart ||  F.moment().subtract(15, "days").format("YYYY-MM-DD");
-                query.dateEnd  = query.dateEnd ||  F.moment().format("YYYY-MM-DD");
+                query.dateStart = query.dateStart || F.moment().subtract(15, "days").format("YYYY-MM-DD");
+                query.dateEnd = query.dateEnd || F.moment().format("YYYY-MM-DD");
 
                 var strDateStart = F.escapeHTML(query.dateStart);
                 var strDateEnd = F.escapeHTML(query.dateEnd);
@@ -21,7 +21,7 @@ module.exports = function (app, co) {
 
                 //获取最近10天的测速记录
                 var speedResult = yield findByDate(strDateStart, strDateEnd, pageId);
-                speedResult = F._.orderBy(speedResult,['createDate'],['desc']);
+                speedResult = F._.orderBy(speedResult, ['createDate'], ['desc']);
                 //console.log("speedResult", speedResult);
 
                 //获取所有的项目列表
@@ -50,14 +50,14 @@ module.exports = function (app, co) {
 
                     _el.timeMarksWithAlias = [];
                     _el.timeMarksWithAliasCount = [];
-                    timeMarkAlias.forEach(function(_item){
+                    timeMarkAlias.forEach(function (_item) {
 
                         var _start = _item.start > 0 ? _el.timeMarks[_item.start] : 0;
                         var _end = _el.timeMarks[_item.end];
 
-                        var _tm =  (_end - _start )  ? Math.ceil(_end - _start ) : "";
+                        var _tm = (_end - _start ) ? Math.ceil(_end - _start) : "";
 
-                        _el.timeMarksWithAlias.push( _tm);
+                        _el.timeMarksWithAlias.push(_tm);
                         _el.timeMarksWithAliasCount.push(_el.timeMarksCount[_item.end]);
 
                     });

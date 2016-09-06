@@ -83,7 +83,7 @@ describe('test/app.test.js', function () {
             });
     });
 
-
+/*
     it('Create one page error', function (done) {
 
         var _create = {
@@ -102,6 +102,22 @@ describe('test/app.test.js', function () {
                 done(err);
             });
     });
+*/
+
+    it('update by hour', function (done) {
+
+        request.get('/script/updateByHour')
+        // .query 方法用来传 querystring，.send 方法用来传 body。
+        // 它们都可以传 Object 对象进去。
+        // 在这里，我们等于访问的是 /fib?n=10
+            .query()
+            .expect(200)
+            .end(function (err, res) {
+                console.log(res.text);
+                done(err);
+            });
+    });
+
 
 
 });

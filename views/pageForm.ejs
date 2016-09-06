@@ -89,9 +89,9 @@
             error: function (request) {
                 alert("Connection error");
             },
-            success: function (data) {
-                if (data.code == 0) {
-                    alert("操作成功");
+            success: function (respond) {
+                if (respond.code == 0) {
+                    alert("操作成功,页面ID:" + respond.data._id);
                     <% if( !_id ){ %>
                         $('#pageForm')[0].reset();
                     <% } %>
