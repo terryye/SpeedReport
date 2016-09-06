@@ -1,0 +1,20 @@
+{
+  apps: [
+    {
+      name: "www",
+      script: "./bin/www",
+      watch: false,
+      env: {
+        "NODE_ENV": "production",
+      },
+      exec_mode: "cluster"
+    },
+    {
+      name: "daemon",
+      env: {
+        "NODE_ENV": "production",
+      },
+      script: "./script/daemon.js"
+    }
+  ]
+}
