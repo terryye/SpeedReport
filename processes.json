@@ -7,14 +7,17 @@
       env: {
         "NODE_ENV": "production",
       },
-      exec_mode: "cluster"
+      exec_mode: "cluster",
+      instances : "max",
+      log_file : "./logs/www.combine.log"
     },
     {
       name: "daemon",
       env: {
-        "NODE_ENV": "production",
+        "NODE_ENV": "production"
       },
-      script: "./script/daemon.js"
+      script: "./script/daemon.js",
+      log_file : "./logs/daemon.combine.log"
     }
   ]
 }
