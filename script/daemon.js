@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+
 var co = require("co");
 var app = require("../app");
 
