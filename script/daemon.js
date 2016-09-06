@@ -11,11 +11,11 @@ M.mongoose.connection.once("open", function () {
 
 
     schedule.scheduleJob('0 0 * * *', function () {
-        updateByHour(F.moment());
+        updateByHour(F.moment().subtract(1, "hours"));
     });
 
     schedule.scheduleJob('0 */10 * * *', function () {
-        updateByHour(F.moment().subtract(1, "hours"));
+        updateByHour(F.moment());
     });
 
 });
