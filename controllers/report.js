@@ -37,7 +37,9 @@ module.exports = function (app, co) {
             //入库流水数据
             if (Math.random() < C.record.chance) {
                 M.record.create(record, function (err) {
-                    console.log(err);
+                    if(err){
+                        console.log(err)
+                    }
                 });
             }
             var emptyImg = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
