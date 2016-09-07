@@ -9,10 +9,12 @@
       },
       exec_mode: "cluster",
       instances : "max",
+      max_memory_restart : "512M",
       log_file : "./logs/www.combine.log"
     },
     {
       name: "daemon",
+      max_memory_restart : "512M",
       env: {
         "NODE_ENV": "production"
       },
