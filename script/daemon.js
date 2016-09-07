@@ -100,13 +100,14 @@ function * grouyByHour(_hour) {
             var prevTms = prev[ns];
             var prevTmsCounts = prev[ns + 'Count'];
 
-            if (tms["0"]) {
-                delete(tms["0"]);  //timeMarks[0]为上报的时间点起始点,没有统计意义。
-            }
-
             for (var k in tms) {
+
+                //timeMarks[0]为上报的时间点起始点,没有统计意义。
+                if(k === "0"){
+                    continue;
+                }
                 //判断数据是否合法,不合法则抛弃
-                if (tms[k] > C.record.maxTimeValue || tms[k] < C.record.minTimeValue) {
+                if (tms[k] > this.maxTimeValue || tms[k] < this.minTimeValue) {
                     continue;
                 }
 
@@ -119,6 +120,11 @@ function * grouyByHour(_hour) {
                 }
             }
         })
+    };
+
+    _reduce.scope = {
+        maxTimeValue: C.record.maxTimeValue,
+        minTimeValue: C.record.minTimeValue
     };
 
     var _finalize = function (doc) {
