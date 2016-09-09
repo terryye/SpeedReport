@@ -2,46 +2,49 @@ module.exports = function (app, co) {
     app
         .route('/report')
         .get(function (req, res) {
-            //组织数据
-            var record = {
-                pageId: Number(req.query.pageid),
-                timings: req.query.timing ? JSON.parse(req.query.timing) : null,
-                timeMarks: JSON.parse(req.query.timemarks),
-                ua: {
-                    browser: req.useragent.browser,
-                    version: req.useragent.version,
-                    os: req.useragent.os,
-                    platform: req.useragent.platform
-                }
-            };
 
-            //入库统计数据  -- 定时更新。
-            /*
-             var resultHour = calculateResultByHour(record);
-             var insertObj = resultHour.insertObj;
-             var updateObj = resultHour.updateObj;
-
-
-             var updateResult = yield M.resultByHour.update({
-             pageId: insertObj.pageId,
-             createHour: insertObj.createHour
-             }
-             , updateObj);
-
-             if (updateResult.nModified == 0) {
-             yield M.resultByHour.create(insertObj);
-             }
-             */
-
-
-            //入库流水数据
-            if (Math.random() < C.record.chance) {
-                M.record.create(record, function (err) {
-                    if(err){
-                        console.log(err)
+            co(function *() {
+                //组织数据
+                var record = {
+                    pageId: Number(req.query.pageid),
+                    timings: req.query.timing ? JSON.parse(req.query.timing) : null,
+                    timeMarks: JSON.parse(req.query.timemarks),
+                    ua: {
+                        browser: req.useragent.browser,
+                        version: req.useragent.version,
+                        os: req.useragent.os,
+                        platform: req.useragent.platform
                     }
-                });
-            }
+                };
+
+
+                //计算统计数据
+                var resultHour = calculateResultByHour(record);
+                var insertObj = resultHour.insertObj;
+                var updateObj = resultHour.updateObj;
+
+
+                //入库统计数据
+                var updateResult = yield M.resultByHour.update({
+                        pageId: insertObj.pageId,
+                        createHour: insertObj.createHour
+                    }
+                    , updateObj);
+                if (updateResult.nModified == 0) {
+                    yield M.resultByHour.create(insertObj);
+                }
+
+
+                //入库流水数据
+                if (Math.random() < C.record.chance) {
+                    M.record.create(record, function (err) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+                }
+            }).catch(F.handleErr.bind(null, res));
+
             var emptyImg = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
             res.writeHead(200, {'Content-Type': 'image/x-ms-bmp'});
             res.end(new Buffer(emptyImg, 'base64'), 'binary');

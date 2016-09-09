@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
+var MongoClient = require('mongodb').MongoClient;
+// Connection url
+var url = 'mongodb://localhost:27017/speed';
 
 var co = require("co");
 var app = require("../app");
-
 var schedule = require('node-schedule');
+
+
+var conn = yield MongoClient.connect(url,null);
 
 M.mongoose.connection.once("open", function () {
     updateByHour(F.moment());
