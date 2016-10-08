@@ -9,6 +9,7 @@ var util = require("util"),
         handleErr: function (res, err) {
             res.status(500);
             if (C.env == "dev"){
+                console.log(err);
                 res.json({
                     code:-1,
                     error: err,

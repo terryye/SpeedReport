@@ -42,7 +42,8 @@ function getSchema() {
             createTime: {
                 type: Date,
                 default: Date.now
-            }
+            },
+            ip : String
         };
 
     //defeine #maxTimeMarks

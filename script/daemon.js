@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 
-var MongoClient = require('mongodb').MongoClient;
+//var MongoClient = require('mongodb').MongoClient;
 // Connection url
-var url = 'mongodb://localhost:27017/speed';
+//var url = 'mongodb://localhost:27017/speed';
 
 var co = require("co");
 var app = require("../app");
 var schedule = require('node-schedule');
 
 
-var conn = yield MongoClient.connect(url,null);
+//var conn = yield MongoClient.connect(url,null);
 
 M.mongoose.connection.once("open", function () {
+    /*
     updateByHour(F.moment());
     //deleteRecord();
 
@@ -26,12 +27,26 @@ M.mongoose.connection.once("open", function () {
     });
 
     //每天凌晨删除一月前的数据
-    schedule.scheduleJob({minute: 0, hour: 3}, function () {
+    schedule.scheduleJob({minute: 0, hour: 2}, function () {
     //    deleteRecord();
+    });
+*/
+
+    //每天凌晨跑前一天资源的加载数据
+    schedule.scheduleJob({minute: 0, hour: 3}, function () {
+            updateResourceByDay();
     });
 
 });
 
+
+
+//每天凌晨跑前一天资源的加载数据
+function updateResourceByDay(){
+
+    
+
+}
 
 //10天前的数据,仅保留20%
 function deleteRecord() {

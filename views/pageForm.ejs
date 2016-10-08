@@ -84,7 +84,8 @@
 
         $.ajax({
             type: "<%= _id ? "PUT" : "POST" %>",
-            url: "../admin/pageForm<%= _id ? "?_id=" + _id : "" %>",
+        //    url: "../admin/pageForm<%= _id ? "?_id=" + _id : "" %>",
+            url: "../report<%= _id ? "?_id=" + _id : "" %>",
             data: $('#pageForm').serialize(),// 你的formid
             error: function (request) {
                 alert("Connection error");

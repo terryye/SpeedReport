@@ -11,6 +11,7 @@ var
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     useragent = require('express-useragent'),
+    cors = require('cors'),
     app = express();
 
 /**
@@ -28,6 +29,10 @@ log4js.configure(C.log);
 app.use(log4js.connectLogger(log4js.getLogger("app"), {level: 'auto'}));
 app.use(favicon(path.join(C.dir.root, 'public', 'favicon.ico')));
 
+app.use(cors({
+    origin:[/\.xunlei\.com$/]
+}));
+app.use(bodyParser.text());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());

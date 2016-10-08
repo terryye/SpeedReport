@@ -7,8 +7,15 @@ var
             uri: 'mongodb://localhost:27017/speed',
             opts: {
                 user: '',
-                pass: ''
+                pass: '',
+                replset: {
+                    socketOptions: {
+                        connectTimeoutMS : 5000
+                    }
+                }
             }
+           // reportTimeOutMs:2000,
+
         },
 //        port: 3000, // 程序端口 在./bin/www中配置
         dir: { // 目录配置

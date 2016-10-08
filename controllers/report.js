@@ -1,9 +1,17 @@
+var ipUtils = require("ip2long");
+
 module.exports = function (app, co) {
     app
         .route('/report')
-        .get(function (req, res) {
-
+        .all(function (req, res) {
             co(function *() {
+                //先响应用户，再进行数据入库。
+                //输出一个0大小的图片,避免部分浏览器产生两次请求。
+                var emptyImg = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
+                res.writeHead(200, {'Content-Type': 'image/x-ms-bmp'});
+                res.end(new Buffer(emptyImg, 'base64'), 'binary');
+                // res.status(204).end(); //暂无环境验证该方式的正确性。
+
                 //组织数据
                 var record = {
                     pageId: Number(req.query.pageid),
@@ -14,7 +22,8 @@ module.exports = function (app, co) {
                         version: req.useragent.version,
                         os: req.useragent.os,
                         platform: req.useragent.platform
-                    }
+                    },
+                    ip: req.ip
                 };
 
 
@@ -22,7 +31,6 @@ module.exports = function (app, co) {
                 var resultHour = calculateResultByHour(record);
                 var insertObj = resultHour.insertObj;
                 var updateObj = resultHour.updateObj;
-
 
                 //入库统计数据
                 var updateResult = yield M.resultByHour.update({
@@ -34,25 +42,38 @@ module.exports = function (app, co) {
                     yield M.resultByHour.create(insertObj);
                 }
 
-
                 //入库流水数据
                 if (Math.random() < C.record.chance) {
-                    M.record.create(record, function (err) {
-                        if (err) {
-                            console.log(err)
-                        }
-                    });
-                }
-            }).catch(F.handleErr.bind(null, res));
+                    var recordResult = yield M.record.create(record);
 
-            var emptyImg = 'Qk1CAAAAAAAAAD4AAAAoAAAAAQAAAAEAAAABAAEAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAAAAAP///wCAAAAA';
-            res.writeHead(200, {'Content-Type': 'image/x-ms-bmp'});
-            res.end(new Buffer(emptyImg, 'base64'), 'binary');
-            /*
-             res.json({})
-             */
+                    //入库resource数据
+                    if (req.body) {
+                        var post = {};
+                        try {
+                            post = JSON.parse(req.body);
+                        } catch (e) {
+                            console.log(e)
+                        }
+                        var resource = [];
+                        if (post.resource) {
+                            for (var url in post.resource) {
+                                resource.push({
+                                    recordId: recordResult._id,
+                                    pageId: recordResult.pageId,
+                                    url: url,
+                                    duration: post.resource[url],
+                                    ip: req.ip
+                                });
+                            }
+                            yield M.resource.create(resource);
+                        }
+                    }
+                }
+
+            }).catch(F.handleErr.bind(null, res));
         })
 };
+
 
 function calculateResultByHour(record) {
 
