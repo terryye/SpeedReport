@@ -44,7 +44,7 @@ module.exports = function (app, co) {
                     var recordResult = yield M.record.create(record);
 
                     //入库resource数据
-                    if (req.body) {
+                    if (req.body && req.body.constructor == String ) {
                         if (Math.random() < C.record.resourceChance) {
                             var post = {};
                             try {
