@@ -43,6 +43,7 @@ var
         ],
         record:{
             chance: 1,    // 每一条记录数据入库的比例为 100%
+            resourceChance:1, //入库resource时间点的比例，在record的基础上再取 100%
             minTimeValue:0, //时间点最小值为0
             maxTimeValue : 600*1000 // 时间点最大值为10分钟
         },

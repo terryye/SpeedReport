@@ -15,7 +15,6 @@ var
                 }
             }
            // reportTimeOutMs:2000,
-
         },
 //        port: 3000, // 程序端口 在./bin/www中配置
         dir: { // 目录配置
@@ -43,7 +42,8 @@ var
             }
         ],
         record:{
-            chance: 0.1,    // 每一条记录数据入库的比例为 100%
+            chance: 0.1,    // 每一条记录数据入库的比例为 10%
+            resourceChance:0.1, //入库resource时间点的比例，在record的基础上再取 10%
             minTimeValue:0, //时间点最小值为0
             maxTimeValue : 600*1000 // 时间点最大值为10分钟
         },

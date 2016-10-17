@@ -1,5 +1,3 @@
-var ipUtils = require("ip2long");
-
 module.exports = function (app, co) {
     app
         .route('/report')
@@ -26,7 +24,6 @@ module.exports = function (app, co) {
                     ip: req.ip
                 };
 
-
                 //计算统计数据
                 var resultHour = calculateResultByHour(record);
                 var insertObj = resultHour.insertObj;
@@ -48,24 +45,26 @@ module.exports = function (app, co) {
 
                     //入库resource数据
                     if (req.body) {
-                        var post = {};
-                        try {
-                            post = JSON.parse(req.body);
-                        } catch (e) {
-                            console.log(e)
-                        }
-                        var resource = [];
-                        if (post.resource) {
-                            for (var url in post.resource) {
-                                resource.push({
-                                    recordId: recordResult._id,
-                                    pageId: recordResult.pageId,
-                                    url: url,
-                                    duration: post.resource[url],
-                                    ip: req.ip
-                                });
+                        if (Math.random() < C.record.resourceChance) {
+                            var post = {};
+                            try {
+                                post = JSON.parse(req.body);
+                            } catch (e) {
+                                console.log(req.body)
                             }
-                            yield M.resource.create(resource);
+                            var resource = [];
+                            if (post.resource) {
+                                for (var url in post.resource) {
+                                    resource.push({
+                                        recordId: recordResult._id,
+                                        pageId: recordResult.pageId,
+                                        url: url,
+                                        duration: post.resource[url],
+                                        ip: req.ip
+                                    });
+                                }
+                                yield M.resource.create(resource);
+                            }
                         }
                     }
                 }
