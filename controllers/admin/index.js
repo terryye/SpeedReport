@@ -14,7 +14,7 @@ module.exports = function (app, co) {
                 var timeMarkAlias = C.timeMarkAlias;
 
                 //获取结果中的所有页面id的业务名称和页面名称
-                var defaultPageIds = [101,102];
+                var defaultPageIds = [1,2,3,4,5,6,102,103,104];
                 var arrPageIds;
                 var pageCond = projectId > 0 ? {projectId: projectId} :  {_id:{$in:defaultPageIds}};
                 var pageInfo = yield M.page.find(pageCond);
