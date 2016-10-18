@@ -29,12 +29,12 @@
     }
 
 })(window, function (root, param) {
-//       var _reportUrl = "http://speed.showapp.xunlei.com/report/";
+       var _reportUrl = "http://speed.showapp.xunlei.com/report/";
 //    var _reportUrl = "http://localhost:3000/report";
 //    _reportUrl ="http://localhost/dashboard/images/bitnami-xampp.png";
-    var _reportUrl = "../report";
+//    var _reportUrl = "../report";
 
-    var _keyMax = 100;//时间点个数.
+    var _keyMax = 100;//时间点个数.()
 
     var _keyName = {//测速系统公共的上报点的键名称
         0: 0,			//起始时间点
