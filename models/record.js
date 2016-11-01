@@ -1,6 +1,12 @@
 module.exports = function (mongoose, modelName) {
     var schema = getSchema();
-    return mongoose.model(modelName, new mongoose.Schema(schema))
+
+
+    var schemaObj = new mongoose.Schema(schema);
+    schemaObj.index({pageId: 1});
+    schemaObj.index({createTime: 1});
+
+    return mongoose.model(modelName, schemaObj);
 };
 
 function getSchema() {
