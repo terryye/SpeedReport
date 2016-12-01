@@ -10,7 +10,7 @@ module.exports = function (mongoose, modelName) {
 };
 
 function getSchema() {
-    var maxTimeMarks = 30,
+    var maxTimeMarks = C.maxTimeMarks,
         recordSchema = {
             pageId: Number,
             timeMarks: {

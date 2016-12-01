@@ -25,7 +25,7 @@ var
         },
         resourceFixUrl: '', // 静态资源web访问修正路径
         exceptFolder: 'except', // model 和 controller 中read dir排除的目录名称
-        maxTimeMarks: 30,  // 最大的时间点个数
+        maxTimeMarks: 100,  // 最大的时间点个数
         timeMarkAlias:[
             {
                 "name": "首元素可见",
