@@ -177,7 +177,6 @@
             result.timing = _buildTimeJsonString(window.performance.timing);
         }
 
-
         //对支持window.performance.getEntries的,采集相关信息
         var resource = {};
         if (window.performance && window.performance.getEntries) {

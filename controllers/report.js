@@ -96,7 +96,7 @@ function calculateResultByHour(record) {
         if (dataType == "timeMarks") {
 
             if (!tms) {
-                throw new Error(`Invalid  timeMarks Value`);
+                throw new Error(`Invalid timeMarks Value`);
             }
 
             if (tms["0"]) {

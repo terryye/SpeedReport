@@ -36,7 +36,7 @@ module.exports = function (app, co) {
                 try{
                     data.timeMarkAlias = JSON.parse(data.timeMarkAlias)
                 }catch(e) {
-                    data.timeMarkAlias = {};
+                    data.timeMarkAlias = [];
                 }
 
                 try {
@@ -53,8 +53,6 @@ module.exports = function (app, co) {
                     });
 
                 }
-
-
             }).catch(F.handleErr.bind(null, res))
         })
         //修改结果

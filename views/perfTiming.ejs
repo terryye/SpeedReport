@@ -1,0 +1,47 @@
+<% include header.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include left.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="date" class="form-control">
+
+                    <input type="radio" class="form-control"/> 24小时
+                    <input type="radio" class="form-control"> 最近一个月
+                </div>
+            </form>
+            <div class="col-md-10">
+                <div class="col-md-2">
+                    <div class="row placeholders">
+                        Data Table
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row placeholders">
+                        <img src="../images/pic/chart_index.png" style="width:700px"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="col-md-2">
+                    <div class="row placeholders">
+                        Data Table
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row placeholders">
+                        <img src="../images/pic/chart_index.png" style="width:700px"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<% include footer.ejs %>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
